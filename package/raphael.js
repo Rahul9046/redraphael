@@ -3973,7 +3973,6 @@ var preventDefault = function preventDefault() {
         }
 
         var node = R._engine.getNode(dragi.el),
-            o,
             next = node.nextSibling,
             parent = node.parentNode,
             display = node.style.display;
@@ -3981,10 +3980,8 @@ var preventDefault = function preventDefault() {
         g.win.opera && parent.removeChild(node);
 
         node.style.display = "none";
-        o = dragi.el.paper.getElementByPoint(x, y);
         node.style.display = display;
         g.win.opera && (next ? parent.insertBefore(node, next) : parent.appendChild(node));
-        o && (0, _eve2['default'])("raphael.drag.over." + dragi.el.id, dragi.el, o);
         x += scrollX;
         y += scrollY;
         for (key in e) {
@@ -11264,10 +11261,12 @@ exports["default"] = function (R) {
                 transform: o.matrix
             });
 
-            sw = o.attrs[has]("stroke-width") ? o.attrs["stroke-width"] : 1;
-            o.attr({
-                "stroke-width": sw
-            });
+            if (_.sx != 1 || _.sy != 1) {
+                sw = o.attrs["stroke-width"];
+                sw && o.attr({
+                    "stroke-width": sw
+                });
+            }
 
             return o;
         };
